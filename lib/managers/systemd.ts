@@ -32,6 +32,7 @@ WantedBy=multi-user.target
  * @param {InstallServiceOptions} options - Options for the installService function.
  */
 async function installServiceSystemd(config: InstallServiceOptions, onlyGenerate: boolean) {
+  console.log("WAT", config)
   const serviceFileName = `${config.name}.service`
 
   // Different paths for user and system mode

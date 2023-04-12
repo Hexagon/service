@@ -36,18 +36,19 @@ async function main(inputArgs: string[]) {
     Deno.exit(0)
   }
 
+  // Handle arguments
+  const system = args.system !== undefined
+  const name = args.name
+  const cmd = args.cmd || args["--"].join(" ")
+  const cwd = args.cwd
+  const user = args.user
+  const home = args.home
+  const force = args.force
+
   /**
    * Handle the install argument
    */
   if (baseArgument === "install" || baseArgument === "generate") {
-    const system = args.system
-    const name = args.name
-    const cmd = args.cmd || args["--"].join(" ")
-    const cwd = args.cwd
-    const user = args.user
-    const home = args.home
-    const force = args.force
-
     try {
       await installService({ system, name, cmd, cwd, user, home }, baseArgument === "generate", force)
       Deno.exit(0)
@@ -56,15 +57,9 @@ async function main(inputArgs: string[]) {
       Deno.exit(1)
     }
     /**
-     * Handle the install argument
+     * Handle the uninstall argument
      */
   } else if (baseArgument === "uninstall") {
-    const system = args.system
-    const name = args.name
-    const cwd = args.cwd
-    const user = args.user
-    const home = args.home
-
     try {
       await uninstallService({ system, name, cwd, user, home })
       Deno.exit(0)
