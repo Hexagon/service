@@ -29,7 +29,7 @@ async function installServiceUpstart(config: InstallServiceOptions, onlyGenerate
   }
 
   const denoPath = Deno.execPath()
-  const envPath = `PATH=$PATH:${denoPath}:${Deno.env.get("HOME")}/.deno/bin`
+  const envPath = `$PATH:${denoPath}:${Deno.env.get("HOME")}/.deno/bin`
 
   let upstartFileContent = upstartFileTemplate.replace(/{{name}}/g, config.name)
   upstartFileContent = upstartFileContent.replace("{{command}}", config.cmd)

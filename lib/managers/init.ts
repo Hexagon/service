@@ -59,7 +59,7 @@ async function installServiceInit(config: InstallServiceOptions, onlyGenerate: b
 
   const denoPath = Deno.execPath()
   const command = config.cmd
-  const servicePath = `PATH=$PATH:${denoPath}:${Deno.env.get("HOME")}/.deno/bin`
+  const servicePath = `$PATH:${denoPath}:${Deno.env.get("HOME")}/.deno/bin`
 
   let initScriptContent = initScriptTemplate.replace(/{{name}}/g, config.name)
   initScriptContent = initScriptContent.replace("{{command}}", command)

@@ -39,7 +39,7 @@ async function installServiceLaunchd(config: InstallServiceOptions, onlyGenerate
 
   const denoPath = Deno.execPath()
   const command = config.cmd
-  const servicePath = `PATH=$PATH:${denoPath}:${config.home}/.deno/bin`
+  const servicePath = `$PATH:${denoPath}:${config.home}/.deno/bin`
   const workingDirectory = config.cwd ? config.cwd : Deno.cwd()
 
   let plistContent = plistTemplate.replace(/{{name}}/g, config.name)
