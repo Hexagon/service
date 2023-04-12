@@ -77,18 +77,18 @@ interface UnnstallServiceOptions {
 
 The `installService` function installs a command as a service, using the current service manager:
 
-    ```ts
-    import { installService } from "https://deno.land/x/service/mod.ts";
+```ts
+import { installService } from "https://deno.land/x/service/mod.ts";
 
-    await installService({
-      system: false, // Use user mode (default) or system mode
-      name: "my-service",
-      cmd: "deno run --allow-net server.ts",
-      user: "username", // Optional, defaults to current user
-      home: "/home/username", // Optional, defaults to current user's home
-      cwd: "/path/to/working/directory", // Optional, defaults to current working directory
-    });
-    ```
+await installService({
+  system: false, // Use user mode (default) or system mode
+  name: "my-service",
+  cmd: "deno run --allow-net server.ts",
+  user: "username", // Optional, defaults to current user
+  home: "/home/username", // Optional, defaults to current user's home
+  cwd: "/path/to/working/directory", // Optional, defaults to current working directory
+});
+```
 
 ### uninstallService
 
