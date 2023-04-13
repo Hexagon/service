@@ -30,15 +30,6 @@ For library usage, simply import the `installService()` function from the `mod.t
 
 To use the service library from the command line, follow these steps:
 
-> **Note**
->
-> - The deno install path (`$HOME/.deno/bin) will automatically be added to path. Additional paths can be supplied by passing a colon separated list to`--path`.
-> - If you have any problems, always use full paths when registering a service. Services do not have the `PATH` that your shell have.
-> - Use `generate` before `install`, that way you can visually inspect the generated configuration before installing it.
-> - Steps requiring elevated access (like installing a system wide service) will not be performed automatically, you will insted get step by step instruction to make the required steps using `sudo` or
-  > the tool of your choice.
-> - You can force service to generate configuration for a manager that is not installed, using systemd as an example: `generate --force systemd`
-
 Install a command as a service:
 
 ```
@@ -62,6 +53,14 @@ Generate a service configuration file without installing it:
 ```
 service generate --name my-service --cmd "deno run --allow-net /full/path/to/server.ts --arg /full/path/to/config.ext"
 ```
+
+Note: 
+
+- The deno install path (`$HOME/.deno/bin`) will automatically be added to path. Additional paths can be supplied by passing a colon separated list to`--path`.
+- If you have any problems, always use full paths when registering a service. Services do not have the `PATH` that your shell have.
+- Use `generate` before `install`, that way you can visually inspect the generated configuration before installing it.
+- Steps requiring elevated access (like installing a system wide service) will not be performed automatically, you will insted get step by step instruction to make the required steps using `sudo` or the tool of your choice.
+- You can force service to generate configuration for a manager that is not installed, using systemd as an example: `generate --force systemd`
 
 ## Programmatic Usage
 
