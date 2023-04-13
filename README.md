@@ -14,10 +14,10 @@ If you want a fully featured process manager for Deno, we recommend using [Pup](
 
 ## Installation
 
-To use Service as a CLI program, you can install it using Deno:
+To use Service as a CLI program, you can install or upgrade it using Deno:
 
 ```sh
-deno install -fra --name service https://deno.land/x/service/service.ts
+deno install -frA --name service https://deno.land/x/service/service.ts
 ```
 
 For library usage, simply import the `installService()` function from the `mod.ts` file:
