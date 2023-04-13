@@ -30,6 +30,12 @@ function parseArguments(args: string[]): Args {
     "force",
   ]
 
+  // All collectable arguments
+  const collectable = [
+    "path",
+    "env",
+  ]
+
   // And a list of aliases
   const alias = {
     "help": "h",
@@ -40,9 +46,11 @@ function parseArguments(args: string[]): Args {
     "user": "u",
     "home": "H",
     "force": "f",
+    "path": "p",
+    "env": "e",
   }
 
-  return parse(args, { alias, boolean: booleanArgs, string: stringArgs, stopEarly: false, "--": true })
+  return parse(args, { alias, boolean: booleanArgs, string: stringArgs, stopEarly: false, collect: collectable, "--": true })
 }
 
 /**
@@ -58,8 +66,19 @@ function checkArguments(args: Args): Args {
   if (baseArgument !== undefined && (typeof baseArgument !== "string" || !validBaseArguments.includes(baseArgument))) {
     throw new Error(`Invalid base argument: ${baseArgument}`)
   }
+
+  // Require a command unless we're uninstalling
   if (baseArgument !== "uninstall" && !args.cmd && !(args["--"] && args["--"].length > 0)) {
     throw new Error(`Specify a command using '--cmd'`)
+  }
+
+  // Check that each env specificers contain an equal sign
+  if (args.env?.length) {
+    for (const env of args.env) {
+      if (!env.includes("=")) {
+        throw new Error("Environment variables must be specified like '--env NAME=VALUE'.")
+      }
+    }
   }
 
   return args

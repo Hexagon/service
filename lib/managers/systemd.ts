@@ -16,6 +16,7 @@ ExecStart=/bin/sh -c "{{command}}"
 Restart=always
 RestartSec=30
 Environment={{path}}
+{{extraEnvs}}
 WorkingDirectory={{workingDirectory}}
 {{extraServiceContent}}
 
@@ -181,6 +182,17 @@ class SystemdService {
       serviceFileContent = serviceFileContent.replace("{{extraServiceContent}}", `User=${options.user}`)
     } else {
       serviceFileContent = serviceFileContent.replace("{{extraServiceContent}}", "")
+    }
+
+    // Add extra environment variables
+    if (options.env && options.env.length > 0) {
+      let extraEnvs = ""
+      for (const env of options.env) {
+        extraEnvs += `Environment=${env}\n`
+      }
+      serviceFileContent = serviceFileContent.replace("{{extraEnvs}}", extraEnvs)
+    } else {
+      serviceFileContent = serviceFileContent.replace("{{extraEnvs}}", "")
     }
 
     return serviceFileContent

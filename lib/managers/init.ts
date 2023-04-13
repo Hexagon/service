@@ -20,6 +20,7 @@ const initScriptTemplate = `#!/bin/sh
 ### END INIT INFO
 
 PATH={{path}}
+{{extraEnvs}}
 
 # Change the next line to match your installation
 DENO_COMMAND="{{command}}"
@@ -71,6 +72,17 @@ class InitService {
     let initScriptContent = initScriptTemplate.replace(/{{name}}/g, config.name)
     initScriptContent = initScriptContent.replace("{{command}}", command)
     initScriptContent = initScriptContent.replace("{{path}}", servicePath)
+
+    // Add extra environment variables
+    if (config.env && config.env.length > 0) {
+      let extraEnvs = ""
+      for (const env of config.env) {
+        extraEnvs += `${env}\n`
+      }
+      initScriptContent = initScriptContent.replace("{{extraEnvs}}", extraEnvs)
+    } else {
+      initScriptContent = initScriptContent.replace("{{extraEnvs}}", "")
+    }
 
     return initScriptContent
   }

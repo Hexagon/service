@@ -31,6 +31,7 @@ interface InstallServiceOptions {
   home?: string
   cwd?: string
   path?: string[]
+  env?: string[]
 }
 
 /**
@@ -69,6 +70,7 @@ function prepareConfig<T extends InstallServiceOptions | UninstallServiceOptions
     user: "user" in options ? options.user || Deno.env.get("USER") : undefined,
     cwd: "cwd" in options ? options.cwd || Deno.cwd() : undefined,
     path: "path" in options ? options.path : undefined,
+    env: "env" in options ? options.env : undefined,
   } as T
 }
 

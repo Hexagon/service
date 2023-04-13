@@ -102,3 +102,58 @@ Deno.test("checkArguments should throw error for missing cmd and --", () => {
 
   assertThrows(() => checkArguments(args), Error, "Specify a command using '--cmd'")
 })
+
+Deno.test("checkArguments should throw error for invalid env specifier", () => {
+  const args = {
+    _: ["install"],
+    help: false,
+    h: false,
+    system: "systemd",
+    s: "systemd",
+    name: "deno-service",
+    n: "deno-service",
+    cwd: "/path/to/working/directory",
+    w: "/path/to/working/directory",
+    cmd: "deno",
+    c: "deno",
+    user: "user",
+    u: "user",
+    home: "/path/to/home",
+    H: "/path/to/home",
+    force: "true",
+    f: "true",
+    env: ["INVALID_ENV"],
+    e: ["INVALID_ENV"],
+    "--": ["run", "--allow-net", "app.ts"],
+  }
+
+  assertThrows(() => checkArguments(args), Error, "Environment variables must be specified like '--env NAME=VALUE'.")
+})
+
+Deno.test("checkArguments should not throw error for valid env specifier", () => {
+  const args = {
+    _: ["install"],
+    help: false,
+    h: false,
+    system: "systemd",
+    s: "systemd",
+    name: "deno-service",
+    n: "deno-service",
+    cwd: "/path/to/working/directory",
+    w: "/path/to/working/directory",
+    cmd: "deno",
+    c: "deno",
+    user: "user",
+    u: "user",
+    home: "/path/to/home",
+    H: "/path/to/home",
+    force: "true",
+    f: "true",
+    env: ["KEY=VALUE"],
+    e: ["KEY=VALUE"],
+    "--": ["run", "--allow-net", "app.ts"],
+  }
+
+  const result = checkArguments(args)
+  assertEquals(result, args)
+})

@@ -11,23 +11,23 @@ import { InstallServiceOptions, UninstallServiceOptions } from "../service.ts"
 const plistTemplate = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>{{name}}</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>{{command}}</string>
-  </array>
-  <key>EnvironmentVariables</key>
   <dict>
-    <key>PATH</key>
-    <string>{{path}}</string>
+    <key>Label</key>
+    <string>{{name}}</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>{{command}}</string>
+    </array>
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>{{path}}</string>
+{{extraEnvs}}    </dict>
+    <key>WorkingDirectory</key>
+    <string>{{workingDirectory}}</string>
+    <key>KeepAlive</key>
+    <true/>
   </dict>
-  <key>WorkingDirectory</key>
-  <string>{{workingDirectory}}</string>
-  <key>KeepAlive</key>
-  <true/>
-</dict>
 </plist>
 `
 
@@ -48,6 +48,18 @@ class LaunchdService {
     plistContent = plistContent.replace(/{{command}}/g, command)
     plistContent = plistContent.replace(/{{path}}/g, servicePath)
     plistContent = plistContent.replace(/{{workingDirectory}}/g, workingDirectory)
+
+    // Add extra environment variables
+    if (options.env && options.env.length > 0) {
+      let extraEnvs = ""
+      for (const env of options.env) {
+        const envSplit = env.split("=")
+        extraEnvs += `      <key>${envSplit[0]}</key>\n      <string>${envSplit[1]}</string>\n`
+      }
+      plistContent = plistContent.replace("{{extraEnvs}}", extraEnvs)
+    } else {
+      plistContent = plistContent.replace("{{extraEnvs}}", "")
+    }
 
     return plistContent
   }

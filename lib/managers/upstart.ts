@@ -20,6 +20,7 @@ respawn
 respawn limit 10 5
 
 env PATH={{path}}
+{{extraEnvs}}
 
 # Change the next line to match your service installation
 env SERVICE_COMMAND="{{command}}"
@@ -47,6 +48,17 @@ class UpstartService {
       config.cmd,
     )
     upstartFileContent = upstartFileContent.replace("{{path}}", envPath)
+
+    // Add extra environment variables
+    if (config.env && config.env.length > 0) {
+      let extraEnvs = ""
+      for (const env of config.env) {
+        extraEnvs += `env ${env}\n`
+      }
+      upstartFileContent = upstartFileContent.replace("{{extraEnvs}}", extraEnvs)
+    } else {
+      upstartFileContent = upstartFileContent.replace("{{extraEnvs}}", "")
+    }
 
     return upstartFileContent
   }

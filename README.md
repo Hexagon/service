@@ -54,12 +54,13 @@ Generate a service configuration file without installing it:
 service generate --name my-service --cmd "deno run --allow-net /full/path/to/server.ts --arg /full/path/to/config.ext"
 ```
 
-Note: 
+Note:
 
 - The deno install path (`$HOME/.deno/bin`) will automatically be added to path. Additional paths can be supplied by passing a colon separated list to`--path`.
 - If you have any problems, always use full paths when registering a service. Services do not have the `PATH` that your shell have.
 - Use `generate` before `install`, that way you can visually inspect the generated configuration before installing it.
-- Steps requiring elevated access (like installing a system wide service) will not be performed automatically, you will insted get step by step instruction to make the required steps using `sudo` or the tool of your choice.
+- Steps requiring elevated access (like installing a system wide service) will not be performed automatically, you will insted get step by step instruction to make the required steps using `sudo` or
+  the tool of your choice.
 - You can force service to generate configuration for a manager that is not installed, using systemd as an example: `generate --force systemd`
 
 ## Programmatic Usage
@@ -78,7 +79,8 @@ interface InstallServiceOptions {
   user?: string
   home?: string
   cwd?: string
-  path[]?: string
+  path?: string[]
+  env?: string[]
 }
 ```
 
@@ -106,6 +108,8 @@ await installService({
   user: "username", // Optional, defaults to current user
   home: "/home/username", // Optional, defaults to current user's home
   cwd: "/path/to/working/directory", // Optional, defaults to current working directory
+  path: ["/extra/path", "/extra/path/2"], // Optional
+  env: ["KEY=VALUE", "KEY2=VALUE2"], // Optional
 })
 ```
 
@@ -119,9 +123,7 @@ import { uninstallService } from "https://deno.land/x/service/mod.ts"
 await uninstallService({
   system: false, // Use user mode if available (default) or force system mode
   name: "my-service",
-  user: "username", // Optional, defaults to current user
-  home: "/home/username", // Optional, defaults to current user's home
-  cwd: "/path/to/working/directory", // Optional, defaults to current working directory
+  home: "/home/username", // Optional, defaults to current user's home, used in case of user services
 })
 ```
 
@@ -138,7 +140,9 @@ const config = await generateConfig({
   cmd: "deno run --allow-net server.ts",
   user: "username", // Optional, defaults to current user
   home: "/home/username", // Optional, defaults to current user's home
-  cwd: "/path/to/working/directory", // Optional, defaults to current working directory
+  cwd: "/path/to/working/directory", // Optional, defaults to current working directory,
+  path: ["/extra/path", "/extra/path/2"], // Optional
+  env: ["KEY=VALUE", "KEY2=VALUE2"], // Optional
 })
 
 console.log(config)
