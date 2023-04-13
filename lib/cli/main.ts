@@ -44,13 +44,14 @@ async function main(inputArgs: string[]) {
   const user = args.user
   const home = args.home
   const force = args.force
+  const path = args.path ? args.path.split(":") : undefined
 
   /**
    * Handle the install argument
    */
   if (baseArgument === "install" || baseArgument === "generate") {
     try {
-      await installService({ system, name, cmd, cwd, user, home }, baseArgument === "generate", force)
+      await installService({ system, name, cmd, cwd, user, home, path }, baseArgument === "generate", force)
       Deno.exit(0)
     } catch (e) {
       console.error(`Could not install service, error: ${e.message}`)
@@ -61,7 +62,7 @@ async function main(inputArgs: string[]) {
      */
   } else if (baseArgument === "uninstall") {
     try {
-      await uninstallService({ system, name, cwd, user, home })
+      await uninstallService({ system, name, home })
       Deno.exit(0)
     } catch (e) {
       console.error(`Could not install service, error: ${e.message}`)
