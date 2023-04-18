@@ -22,7 +22,9 @@ deno install -frA --name service https://deno.land/x/service/service.ts
 
 For library usage, simply import the `installService()` function from the `mod.ts` file:
 
-    import { installService } from "https://deno.land/x/service/mod.ts"
+```ts
+import { installService } from "https://deno.land/x/service/mod.ts"
+```
 
 > **Note**: Make sure to pin the import to a specific version, like `service@1.0.0`
 
@@ -32,7 +34,7 @@ To use the service library from the command line, follow these steps:
 
 Install a command as a service:
 
-```
+```sh
 # Using deno
 
 service install --name my-service --cmd "deno run --allow-net /full/path/to/server.ts"
@@ -44,13 +46,13 @@ service install --name my-service --cmd "/full/path/to/executable --optional-arg
 
 Uninstall a service:
 
-```
+```sh
 service uninstall --name my-service
 ```
 
 Generate a service configuration file without installing it:
 
-```
+```sh
 service generate --name my-service --cmd "deno run --allow-net /full/path/to/server.ts --arg /full/path/to/config.ext"
 ```
 
