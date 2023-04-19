@@ -2,6 +2,7 @@ import { SystemdService } from "./managers/systemd.ts"
 import { InitService } from "./managers/init.ts"
 import { UpstartService } from "./managers/upstart.ts"
 import { LaunchdService } from "./managers/launchd.ts"
+import { WindowsService } from "./managers/windows.ts"
 
 /**
  * Exports helper functions to install any command as a system service
@@ -65,7 +66,7 @@ function prepareConfig<T extends InstallServiceOptions | UninstallServiceOptions
   return {
     system: options.system || false,
     name: options.name || "deno-service",
-    home: options.home || Deno.env.get("HOME"),
+    home: options.home || Deno.env.get("HOME") || Deno.env.get("userprofile"),
     cmd: "cmd" in options ? options.cmd : undefined,
     user: "user" in options ? options.user || Deno.env.get("USER") : undefined,
     cwd: "cwd" in options ? options.cwd || Deno.cwd() : undefined,
@@ -119,6 +120,7 @@ serviceManager.register("sysvinit", new InitService())
 serviceManager.register("docker-init", new InitService())
 serviceManager.register("upstart", new UpstartService())
 serviceManager.register("launchd", new LaunchdService())
+serviceManager.register("windows", new WindowsService())
 
 async function installService(options: InstallServiceOptions, onlyGenerate: boolean, forceInitSystem?: string) {
   if (forceInitSystem && !onlyGenerate) {

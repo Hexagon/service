@@ -9,7 +9,7 @@ If you want a fully featured process manager for Deno, we recommend using [Pup](
 - Easy-to-use CLI for managing services
 - Library usage through `mod.ts` for custom integrations
 - Install, uninstall, and generate service configurations
-- Compatible with systemd, sysvinit, docker-init, upstart (Linux) and launchd (macOS) service managers
+- Compatible with systemd, sysvinit, docker-init, upstart (Linux), launchd (macOS) and SCM (Windows) service managers
 - Built for Deno, but usable to install any script as service on any system.
 
 ## Installation
