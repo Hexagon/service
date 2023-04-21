@@ -16,8 +16,7 @@ const plistTemplate = `<?xml version="1.0" encoding="UTF-8"?>
     <string>{{name}}</string>
     <key>ProgramArguments</key>
     <array>
-      <string>{{command}}</string>
-    </array>
+{{command}}    </array>
     <key>EnvironmentVariables</key>
     <dict>
       <key>PATH</key>
@@ -40,14 +39,19 @@ class LaunchdService {
    */
   generateConfig(options: InstallServiceOptions): string {
     const denoPath = Deno.execPath()
-    const command = options.cmd
+    const commandArgs = options.cmd.split(" ")
     const servicePath = `${options.path?.join(":")}:${denoPath}:${options.home}/.deno/bin`
     const workingDirectory = options.cwd ? options.cwd : Deno.cwd()
 
     let plistContent = plistTemplate.replace(/{{name}}/g, options.name)
-    plistContent = plistContent.replace(/{{command}}/g, command)
     plistContent = plistContent.replace(/{{path}}/g, servicePath)
     plistContent = plistContent.replace(/{{workingDirectory}}/g, workingDirectory)
+
+    let programArguments = ""
+    for (const arg of commandArgs) {
+      programArguments += `      <string>${arg}</string>\n`
+    }
+    plistContent = plistContent.replace("{{command}}", programArguments)
 
     // Add extra environment variables
     if (options.env && options.env.length > 0) {
