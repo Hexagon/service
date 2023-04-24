@@ -65,6 +65,7 @@ class WindowsService {
         stdout: "piped",
       })
       const installService = installServiceCommand.spawn()
+      installService.ref()
       const installServiceOutput = await installService.output()
       const installServiceText = new TextDecoder().decode(installServiceOutput.stderr)
       if (!installServiceOutput.success) {
@@ -114,6 +115,7 @@ class WindowsService {
       stdout: "piped",
     })
     const uninstallService = uninstallServiceCommand.spawn()
+    uninstallService.ref()
     const uninstallServiceOutput = await uninstallService.output()
     const uninstallServiceText = new TextDecoder().decode(uninstallServiceOutput.stderr)
     if (!uninstallServiceOutput.success) {
@@ -152,7 +154,7 @@ class WindowsService {
       }
     }
 
-    batchFileContent += `"${denoPath}" run -A --allow-ffi --unstable https://deno.land/x/windows_service@1.0.7/run.ts --serviceName ${options.name} -- ${options.cmd}\n`
+    batchFileContent += `"${denoPath}" run -A --allow-ffi --unstable https://deno.land/x/windows_service@1.0.10/run.ts --serviceName ${options.name} -- ${options.cmd}\n`
 
     return batchFileContent
   }
