@@ -5,7 +5,7 @@
  * @license   MIT
  */
 
-import { existsSync } from "../../deps.ts"
+import { existsSync, path } from "../../deps.ts"
 import { InstallServiceOptions, UninstallServiceOptions } from "../service.ts"
 
 const plistTemplate = `<?xml version="1.0" encoding="UTF-8"?>
@@ -90,6 +90,9 @@ class LaunchdService {
       console.log("\nConfiguration:\n")
       console.log(plistContent)
     } else {
+      const plistDir = path.dirname(plistPath)
+      await Deno.mkdir(plistDir, { recursive: true })
+
       // ToDo: Remember to rollback on failure
       await Deno.writeTextFile(plistPath, plistContent)
 

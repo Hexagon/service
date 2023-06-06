@@ -5,7 +5,7 @@
  * @license   MIT
  */
 
-import { existsSync } from "../../deps.ts"
+import { existsSync, path } from "../../deps.ts"
 import { InstallServiceOptions, UninstallServiceOptions } from "../service.ts"
 
 const serviceFileTemplate = `[Unit]
@@ -85,6 +85,10 @@ class SystemdService {
       console.log(`\nStep 4: Start the service now`)
       console.log(`\n  sudo systemctl start ${config.name}\n`)
     } else {
+      // Ensure directory of servicePath exists
+      const serviceDir = path.dirname(servicePath)
+      await Deno.mkdir(serviceDir, { recursive: true })
+
       // Write configuration
       await Deno.writeTextFile(servicePath, serviceFileContent)
 
