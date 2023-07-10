@@ -18,6 +18,7 @@ Deno.test("generateConfig should create a valid service configuration", () => {
   assertStringIncludes(generatedConfig, 'ExecStart=/bin/sh -c "deno run --allow-net server.ts"')
   assertStringIncludes(generatedConfig, "Environment=PATH=")
   assertStringIncludes(generatedConfig, "/home/testuser/.deno/bin")
+  assertStringIncludes(generatedConfig, "WantedBy=default.target")
   assertStringIncludes(generatedConfig, "/usr/local/bin")
 })
 
@@ -52,4 +53,19 @@ Deno.test("install should create and display service configuration in user mode 
   assertStringIncludes(consoleOutput.join("\n"), "/home/testuser/.config/systemd/user/test-service.service")
   assertStringIncludes(consoleOutput.join("\n"), "Description=test-service (Deno Service)")
   assertStringIncludes(consoleOutput.join("\n"), 'ExecStart=/bin/sh -c "deno run --allow-net server.ts"')
+})
+
+Deno.test("generateConfig should contain multi-user.target in system mode", () => {
+  const options: InstallServiceOptions = {
+    name: "test-service",
+    cmd: "deno run --allow-net server.ts",
+    home: "/home/testuser",
+    user: "testuser",
+    system: true,
+    path: ["/usr/local/bin"],
+  }
+  const systemdService = new SystemdService()
+  const generatedConfig = systemdService.generateConfig(options)
+
+  assertStringIncludes(generatedConfig, "WantedBy=multi-user.target")
 })

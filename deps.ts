@@ -8,8 +8,8 @@
  */
 
 // cli
-export { parse } from "https://deno.land/std@0.183.0/flags/mod.ts"
-export type { Args } from "https://deno.land/std@0.183.0/flags/mod.ts"
-export * as path from "https://deno.land/std@0.183.0/path/mod.ts"
+export { parse } from "https://deno.land/std@0.193.0/flags/mod.ts"
+export type { Args } from "https://deno.land/std@0.193.0/flags/mod.ts"
+export * as path from "https://deno.land/std@0.193.0/path/mod.ts"
 // services
-export { existsSync } from "https://deno.land/std@0.183.0/fs/mod.ts"
+export { existsSync } from "https://deno.land/std@0.193.0/fs/mod.ts"

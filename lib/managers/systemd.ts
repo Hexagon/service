@@ -21,7 +21,7 @@ WorkingDirectory={{workingDirectory}}
 {{extraServiceContent}}
 
 [Install]
-WantedBy=multi-user.target
+WantedBy={{wantedByTarget}}
 `
 
 class SystemdService {
@@ -51,6 +51,7 @@ class SystemdService {
       Deno.exit(1)
     }
 
+    // Automatically enable linger for current user using loginctl if running in user mode
     if (!config.system && !onlyGenerate) {
       if (!config.user) {
         throw new Error("Username not found in $USER, must be specified using the --username flag.")
@@ -184,8 +185,10 @@ class SystemdService {
     // Add user to service file if running in system mode
     if (options.system) {
       serviceFileContent = serviceFileContent.replace("{{extraServiceContent}}", `User=${options.user}`)
+      serviceFileContent = serviceFileContent.replace("{{wantedByTarget}}", "multi-user.target")
     } else {
       serviceFileContent = serviceFileContent.replace("{{extraServiceContent}}", "")
+      serviceFileContent = serviceFileContent.replace("{{wantedByTarget}}", "default.target")
     }
 
     // Add extra environment variables
