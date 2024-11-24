@@ -4,6 +4,8 @@ Service is a simple Deno module for managing system services. It offers a conven
 
 If you want a fully featured process manager for Deno, we recommend using [Pup](https://github.com/hexagon/pup).
 
+**Note:** This package is deprecated by [@cross/service](https://github.com/cross-org/service)
+
 ## Features
 
 - Easy-to-use CLI for managing services
